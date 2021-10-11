@@ -4,13 +4,8 @@ services:
     image: ghcr.io/h3poteto/elixir-node:1.12.1-node14-slim-buster
     user: root
     working_dir: /var/opt/app
+    ports:
+      - "4000:4000"
     volumes:
       - .:/var/opt/app
-      - deps:/var/opt/app/deps
-      - build:/var/opt/app/_build
 
-volumes:
-  deps:
-    driver: 'local'
-  build:
-    driver: 'local'
