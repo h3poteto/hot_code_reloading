@@ -2,6 +2,7 @@ version: "3.0"
 services:
   elixir:
     image: ghcr.io/h3poteto/elixir-node:1.12.1-node14-slim-buster
+    user: root
     working_dir: /var/opt/app
     volumes:
       - .:/var/opt/app
