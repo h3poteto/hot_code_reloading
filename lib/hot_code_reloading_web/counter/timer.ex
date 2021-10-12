@@ -25,7 +25,7 @@ defmodule HotCodeReloadingWeb.Counter.Timer do
     Process.send_after(self(), :work, 5 * 1000)
   end
 
-  def start_link(state \\ []) do
+  def start_link(_) do
     {:ok, pid} = Counter.start_link()
     GenServer.start_link(__MODULE__, %Timer{counter: pid}, name: __MODULE__)
   end
