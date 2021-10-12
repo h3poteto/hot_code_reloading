@@ -9,6 +9,8 @@ defmodule HotCodeReloading.Application do
   def start(_type, _args) do
     children = [
       HotCodeReloadingWeb.Counter.Timer,
+      HotCodeReloadingWeb.Queue.Queue,
+      HotCodeReloadingWeb.Queue.Timer,
       # Start the Telemetry supervisor
       HotCodeReloadingWeb.Telemetry,
       # Start the PubSub system
