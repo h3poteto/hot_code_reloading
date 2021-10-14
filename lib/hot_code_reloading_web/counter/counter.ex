@@ -19,6 +19,10 @@ defmodule HotCodeReloadingWeb.Counter.Counter do
     {:reply, next, %{state | count: next}}
   end
 
+  def handle_call(:current, _from, %{count: number} = state) do
+    {:reply, number, state}
+  end
+
   def start_link(init_number \\ 0) do
     GenServer.start_link(__MODULE__, %Counter{count: init_number}, name: __MODULE__)
   end
@@ -29,5 +33,9 @@ defmodule HotCodeReloadingWeb.Counter.Counter do
 
   def decrement() do
     GenServer.call(__MODULE__, :decrement)
+  end
+
+  def current() do
+    GenServer.call(__MODULE__, :current)
   end
 end

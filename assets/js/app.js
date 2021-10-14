@@ -50,6 +50,11 @@ window.liveSocket = liveSocket;
 var socket = new WebSocket("ws://localhost:4000/websocket");
 socket.addEventListener("open", (event) => {
   socket.send("start");
+  setInterval(() => {
+    if (socket.readyState == socket.OPEN) {
+      socket.send("ping");
+    }
+  }, 20000);
 });
 
 socket.addEventListener("message", (event) => {

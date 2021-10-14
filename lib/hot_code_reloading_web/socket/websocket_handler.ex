@@ -2,6 +2,7 @@ defmodule HotCodeReloadingWeb.Socket.WebSocketHandler do
   @behaviour :cowboy_websocket
 
   require Logger
+  alias HotCodeReloadingWeb.Counter.Counter
 
   def init(req, state) do
     {:cowboy_websocket, req, state}
@@ -16,15 +17,30 @@ defmodule HotCodeReloadingWeb.Socket.WebSocketHandler do
     {:reply, :pong, state}
   end
 
+  def websocket_handle({:text, "start"}, state) do
+    Logger.debug("start counter")
+    Process.send_after(self(), :counter, 10 * 1000)
+    {:reply, {:text, "started"}, state}
+  end
+
   def websocket_handle({:text, message}, state) do
     Logger.debug("recived message: #{message}")
     {:reply, {:text, message}, state}
   end
 
-  def websocket_info(_info, state), do: {[], state}
+  def websocket_info(:counter, state) do
+    current = Counter.current()
+    Process.send_after(self(), :counter, 3 * 1000)
+    {:reply, {:text, "#{current}"}, state}
+  end
 
-  def terminate(_reason, _req, _state) do
-    Logger.info("terminated")
+  def websocket_info(info, state) do
+    Logger.warn("unknown info is recived #{info}")
+    {[], state}
+  end
+
+  def terminate(reason, _req, _state) do
+    Logger.info("terminated because #{reason}")
     :ok
   end
 end
