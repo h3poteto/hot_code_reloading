@@ -10,8 +10,14 @@ import Config
 # which you should run after static files are built and
 # before starting your production server.
 config :hot_code_reloading, HotCodeReloadingWeb.Endpoint,
-  url: [host: "example.com", port: 80],
-  cache_static_manifest: "priv/static/cache_manifest.json"
+  url: [host: "localhost", scheme: "http", port: 4000],
+  http: [ip: {0, 0, 0, 0}, port: 4000],
+  https: nil,
+  cache_static_manifest: "priv/static/cache_manifest.json",
+  server: true,
+  check_origin: false,
+  root: "priv/static",
+  version: Application.spec(:phoenix_distillery, :vsn)
 
 # Do not print debug messages in production
 config :logger, level: :info

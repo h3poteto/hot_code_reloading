@@ -2,10 +2,11 @@ version: "3.0"
 services:
   elixir:
     image: ghcr.io/h3poteto/elixir-node:1.12.1-node14-slim-buster
-    user: root
     working_dir: /var/opt/app
     ports:
       - "4000:4000"
     volumes:
       - .:/var/opt/app
+    environment:
+      SECRET_KEY_BASE: y2+NyzDPCE4IdcqOycf4FKw/ufHGAUaz5WsP50rH4bm86PwRVUB5FMtzqjScd1MV
 
