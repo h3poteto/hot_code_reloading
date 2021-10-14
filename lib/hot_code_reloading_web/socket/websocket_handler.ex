@@ -17,6 +17,7 @@ defmodule HotCodeReloadingWeb.Socket.WebSocketHandler do
   end
 
   def websocket_handle({:text, message}, state) do
+    Logger.debug("recived message: #{message}")
     {:reply, {:text, message}, state}
   end
 
