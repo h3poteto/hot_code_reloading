@@ -40,7 +40,8 @@ defmodule HotCodeReloadingWeb.Socket.WebSocketHandler do
   end
 
   def terminate(reason, _req, _state) do
-    Logger.info("terminated because #{reason}")
+    Logger.info("terminated")
+    IO.inspect(reason)
     :ok
   end
 end
