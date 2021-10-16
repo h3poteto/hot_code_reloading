@@ -20,7 +20,7 @@ config :hot_code_reloading, HotCodeReloadingWeb.Endpoint,
   version: Application.spec(:phoenix_distillery, :vsn)
 
 # Do not print debug messages in production
-config :logger, level: :info
+config :logger, level: :debug
 
 # ## SSL Support
 #

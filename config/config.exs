@@ -7,12 +7,20 @@
 # General application configuration
 import Config
 
+dispatch = [
+  _: [
+    {"/websocket", HotCodeReloadingWeb.Socket.WebSocketHandler, []},
+    {:_, Phoenix.Endpoint.Cowboy2Handler, {HotCodeReloadingWeb.Endpoint, []}}
+  ]
+]
+
 # Configures the endpoint
 config :hot_code_reloading, HotCodeReloadingWeb.Endpoint,
   url: [host: "localhost"],
   render_errors: [view: HotCodeReloadingWeb.ErrorView, accepts: ~w(html json), layout: false],
   pubsub_server: HotCodeReloading.PubSub,
-  live_view: [signing_salt: "Ffwzhz21"]
+  live_view: [signing_salt: "Ffwzhz21"],
+  http: [dispatch: dispatch]
 
 # Configures the mailer
 #
