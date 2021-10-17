@@ -79,7 +79,7 @@ var timeline = document.querySelector(".chat");
 chat.addEventListener("message", (event) => {
   console.log("Chat: ", event.data);
   if (event.data !== "pong") {
-    timeline.insertAdjacentHTML("beforeend", `<p>${event.data}</p>`);
+    timeline.insertAdjacentHTML("afterbegin", `<p>${event.data}</p>`);
   }
 });
 
