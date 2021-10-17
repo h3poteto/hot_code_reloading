@@ -49,7 +49,7 @@ window.liveSocket = liveSocket;
 
 var counter = new WebSocket("ws://localhost:4000/websocket/counter");
 counter.addEventListener("open", (event) => {
-  counter.send("start counter");
+  counter.send("start");
   setInterval(() => {
     if (counter.readyState == counter.OPEN) {
       counter.send("ping");
