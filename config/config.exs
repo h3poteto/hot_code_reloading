@@ -9,7 +9,8 @@ import Config
 
 dispatch = [
   _: [
-    {"/websocket", HotCodeReloadingWeb.Socket.WebSocketHandler, []},
+    {"/websocket/counter", HotCodeReloadingWeb.Socket.CounterHandler, []},
+    {"/websocket/chat", HotCodeReloadingWeb.Socket.ChatHandler, []},
     {:_, Phoenix.Endpoint.Cowboy2Handler, {HotCodeReloadingWeb.Endpoint, []}}
   ]
 ]

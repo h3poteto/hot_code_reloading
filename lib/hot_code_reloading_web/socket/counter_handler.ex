@@ -1,4 +1,4 @@
-defmodule HotCodeReloadingWeb.Socket.WebSocketHandler do
+defmodule HotCodeReloadingWeb.Socket.CounterHandler do
   @behaviour :cowboy_websocket
 
   require Logger
