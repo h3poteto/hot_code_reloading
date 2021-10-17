@@ -1,4 +1,6 @@
 defmodule HotCodeReloadingWeb.Socket.ChatHandler do
+  @vsn "1"
+
   @behaviour :cowboy_websocket
   alias HotCodeReloadingWeb.Socket.ChatHandler
 

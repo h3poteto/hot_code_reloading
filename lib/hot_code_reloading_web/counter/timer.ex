@@ -1,4 +1,6 @@
 defmodule HotCodeReloadingWeb.Counter.Timer do
+  @vsn "1"
+
   alias HotCodeReloadingWeb.Counter.Counter
   alias HotCodeReloadingWeb.Counter.Timer
 

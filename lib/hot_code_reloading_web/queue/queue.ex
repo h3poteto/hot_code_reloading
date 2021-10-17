@@ -1,4 +1,5 @@
 defmodule HotCodeReloadingWeb.Queue.Queue do
+  @vsn "1"
   use GenServer
 
   def init(state) do

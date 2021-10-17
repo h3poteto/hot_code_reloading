@@ -1,4 +1,6 @@
 defmodule HotCodeReloadingWeb.Counter.Counter do
+  @vsn "1"
+
   alias HotCodeReloadingWeb.Counter.Counter
 
   use GenServer
