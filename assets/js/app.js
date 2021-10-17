@@ -47,20 +47,47 @@ liveSocket.connect();
 // >> liveSocket.disableLatencySim()
 window.liveSocket = liveSocket;
 
-var socket = new WebSocket("ws://localhost:4000/websocket");
-socket.addEventListener("open", (event) => {
-  socket.send("start");
+var counter = new WebSocket("ws://localhost:4000/websocket/counter");
+counter.addEventListener("open", (event) => {
+  counter.send("start counter");
   setInterval(() => {
-    if (socket.readyState == socket.OPEN) {
-      socket.send("ping");
+    if (counter.readyState == counter.OPEN) {
+      counter.send("ping");
     }
   }, 20000);
 });
 
-socket.addEventListener("message", (event) => {
-  console.log("Received: ", event.data);
+counter.addEventListener("message", (event) => {
+  console.log("Counter: ", event.data);
 });
 
-socket.addEventListener("close", (event) => {
-  console.log("Connection was closed.");
+counter.addEventListener("close", (event) => {
+  console.log("Counter connection was closed.");
+});
+
+var name = Math.random().toString(32).substring(2);
+var chat = new WebSocket("ws://localhost:4000/websocket/chat", name);
+chat.addEventListener("open", (event) => {
+  setInterval(() => {
+    if (chat.readyState == chat.OPEN) {
+      chat.send("ping");
+    }
+  }, 20000);
+});
+
+var timeline = document.querySelector(".chat");
+chat.addEventListener("message", (event) => {
+  console.log("Chat: ", event.data);
+  if (event.data !== "pong") {
+    timeline.insertAdjacentHTML("beforeend", `<p>${event.data}</p>`);
+  }
+});
+
+chat.addEventListener("close", (event) => {
+  console.log("Chat connection was closed.");
+});
+
+var postButton = document.getElementById("post");
+postButton.addEventListener("click", (event) => {
+  chat.send("Hi!");
 });
