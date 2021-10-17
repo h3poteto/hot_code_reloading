@@ -28,12 +28,7 @@ defmodule HotCodeReloadingWeb.Socket.ChatHandler do
   end
 
   def websocket_handle({:text, message}, %{username: username} = state) do
-    now = DateTime.utc_now()
-
-    {:ok, _} =
-      broadcast(
-        "#{message} from #{username} at #{now.year}/#{now.month}/#{now.day} #{now.hour}:#{now.minute}:#{now.second}"
-      )
+    {:ok, _} = broadcast("#{message} from #{username}")
 
     {:ok, state}
   end
