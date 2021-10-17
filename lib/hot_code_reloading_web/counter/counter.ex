@@ -1,11 +1,11 @@
 defmodule HotCodeReloadingWeb.Counter.Counter do
-  @vsn "1"
+  @vsn "2.0"
 
   alias HotCodeReloadingWeb.Counter.Counter
 
   use GenServer
 
-  defstruct [:count]
+  defstruct [:count, :previous]
 
   def init(state) do
     {:ok, state}
@@ -13,16 +13,16 @@ defmodule HotCodeReloadingWeb.Counter.Counter do
 
   def handle_call(:increment, _from, %{count: number} = state) do
     next = number + 1
-    {:reply, next, %{state | count: next}}
+    {:reply, {next, number}, %{state | count: next, previous: number}}
   end
 
   def handle_call(:decrement, _from, %{count: number} = state) do
     next = number - 1
-    {:reply, next, %{state | count: next}}
+    {:reply, {next, number}, %{state | count: next, previous: number}}
   end
 
-  def handle_call(:current, _from, %{count: number} = state) do
-    {:reply, number, state}
+  def handle_call(:current, _from, %{count: number, previous: previous} = state) do
+    {:reply, {number, previous}, state}
   end
 
   def start_link(init_number \\ 0) do
@@ -39,5 +39,10 @@ defmodule HotCodeReloadingWeb.Counter.Counter do
 
   def current() do
     GenServer.call(__MODULE__, :current)
+  end
+
+  # Version up from 1.x to 2.x
+  def code_change("1", %{counter: number}, _void) do
+    {:ok, %{counter: number, previous: number}}
   end
 end

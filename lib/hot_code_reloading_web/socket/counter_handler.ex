@@ -29,9 +29,9 @@ defmodule HotCodeReloadingWeb.Socket.CounterHandler do
   end
 
   def websocket_info(:counter, state) do
-    current = Counter.current()
+    {current, previous} = Counter.current()
     Process.send_after(self(), :counter, 3 * 1000)
-    {:reply, {:text, "#{current}"}, state}
+    {:reply, {:text, "#{current}, #{previous}"}, state}
   end
 
   def websocket_info(info, state) do
