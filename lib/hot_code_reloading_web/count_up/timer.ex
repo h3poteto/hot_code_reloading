@@ -1,8 +1,8 @@
-defmodule HotCodeReloadingWeb.Counter.Timer do
+defmodule HotCodeReloadingWeb.CountUp.Timer do
   @vsn "1"
 
-  alias HotCodeReloadingWeb.Counter.Counter
-  alias HotCodeReloadingWeb.Counter.Timer
+  alias HotCodeReloadingWeb.CountUp.Counter
+  alias HotCodeReloadingWeb.CountUp.Timer
 
   use GenServer
 
