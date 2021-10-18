@@ -2,7 +2,7 @@ defmodule HotCodeReloadingWeb.Socket.CounterHandler do
   @behaviour :cowboy_websocket
 
   require Logger
-  alias HotCodeReloadingWeb.Counter.Counter
+  alias HotCodeReloadingWeb.CountUp.Counter
 
   def init(req, state) do
     {:cowboy_websocket, req, state}

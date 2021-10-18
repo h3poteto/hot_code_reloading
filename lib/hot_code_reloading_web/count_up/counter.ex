@@ -1,7 +1,7 @@
-defmodule HotCodeReloadingWeb.Counter.Counter do
+defmodule HotCodeReloadingWeb.CountUp.Counter do
   @vsn "1"
 
-  alias HotCodeReloadingWeb.Counter.Counter
+  alias HotCodeReloadingWeb.CountUp.Counter
 
   use GenServer
 
@@ -16,11 +16,6 @@ defmodule HotCodeReloadingWeb.Counter.Counter do
     {:reply, next, %{state | count: next}}
   end
 
-  def handle_call(:decrement, _from, %{count: number} = state) do
-    next = number - 1
-    {:reply, next, %{state | count: next}}
-  end
-
   def handle_call(:current, _from, %{count: number} = state) do
     {:reply, number, state}
   end
@@ -31,10 +26,6 @@ defmodule HotCodeReloadingWeb.Counter.Counter do
 
   def increment() do
     GenServer.call(__MODULE__, :increment)
-  end
-
-  def decrement() do
-    GenServer.call(__MODULE__, :decrement)
   end
 
   def current() do
