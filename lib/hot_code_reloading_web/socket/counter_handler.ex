@@ -2,15 +2,18 @@ defmodule HotCodeReloadingWeb.Socket.CounterHandler do
   @behaviour :cowboy_websocket
 
   require Logger
-  alias HotCodeReloadingWeb.Counter.Counter
+  alias HotCodeReloadingWeb.CountDown.Counter
+
+  defstruct [:counter]
 
   def init(req, state) do
     {:cowboy_websocket, req, state}
   end
 
-  def websocket_init(state) do
+  def websocket_init(_state) do
     Logger.info("started websocket connection")
-    {:ok, state}
+    {:ok, pid} = GenServer.start_link(Counter, %Counter{count: 1000})
+    {:ok, %{counter: pid}}
   end
 
   def websocket_handle(:ping, state) do
@@ -28,15 +31,23 @@ defmodule HotCodeReloadingWeb.Socket.CounterHandler do
     {:reply, {:text, message}, state}
   end
 
-  def websocket_info(:counter, state) do
-    current = Counter.current()
-    Process.send_after(self(), :counter, 3 * 1000)
+  def websocket_info(:counter, %{counter: pid} = state) do
+    GenServer.call(pid, :decrement)
+    current = GenServer.call(pid, :current)
+    Process.send_after(self(), :counter, 5 * 1000)
     {:reply, {:text, "#{current}"}, state}
   end
 
   def websocket_info(info, state) do
     Logger.warn("unknown info is recived #{info}")
     {[], state}
+  end
+
+  def terminate(reason, _req, %{counter: pid} = _state) do
+    GenServer.stop(pid)
+    Logger.info("terminated")
+    IO.inspect(reason)
+    :ok
   end
 
   def terminate(reason, _req, _state) do
