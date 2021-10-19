@@ -11,6 +11,7 @@ defmodule HotCodeReloading.Application do
       HotCodeReloadingWeb.CountUp.Timer,
       HotCodeReloadingWeb.Queue.Queue,
       HotCodeReloadingWeb.Queue.Timer,
+      HotCodeReloadingWeb.Stack.Supervisor,
       # Start the Telemetry supervisor
       HotCodeReloadingWeb.Telemetry,
       # Start the PubSub system
