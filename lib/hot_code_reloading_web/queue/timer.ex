@@ -1,6 +1,8 @@
 defmodule HotCodeReloadingWeb.Queue.Timer do
-  alias HotCodeReloadingWeb.Queue
+  @vsn "1"
 
+  alias HotCodeReloadingWeb.Queue
+  require Logger
   use GenServer
 
   def init(state) do
@@ -12,8 +14,8 @@ defmodule HotCodeReloadingWeb.Queue.Timer do
     {:ok, datetime} = DateTime.now("Etc/UTC")
     Queue.Queue.enqueue(datetime)
 
-    Queue.Queue.queue()
-    |> IO.inspect()
+    q = Queue.Queue.queue()
+    Logger.debug("Queue enqueued #{inspect(q)}")
 
     schedule_work()
 
