@@ -3,7 +3,7 @@ defmodule HotCodeReloadingWeb.CountUp.Timer do
 
   alias HotCodeReloadingWeb.CountUp.Counter
   alias HotCodeReloadingWeb.CountUp.Timer
-
+  require Logger
   use GenServer
 
   defstruct [:counter]
@@ -14,8 +14,8 @@ defmodule HotCodeReloadingWeb.CountUp.Timer do
   end
 
   def handle_info(:work, state) do
-    Counter.increment()
-    |> IO.inspect()
+    count = Counter.increment()
+    Logger.debug("Count up #{count}")
 
     schedule_work()
 
