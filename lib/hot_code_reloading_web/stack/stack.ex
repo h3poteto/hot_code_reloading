@@ -4,19 +4,21 @@ defmodule HotCodeReloadingWeb.Stack.Stack do
   use GenServer
   require Logger
 
+  defstruct [:stack, :last_insert_time]
+
   @impl GenServer
   def init(state) do
     {:ok, state}
   end
 
   @impl GenServer
-  def handle_call(:pop, _from, []) do
-    {:reply, nil, []}
+  def handle_call(:pop, _from, %{stack: []} = state) do
+    {:reply, nil, state}
   end
 
   @impl GenServer
-  def handle_call(:pop, _from, [head | tail]) do
-    {:reply, head, tail}
+  def handle_call(:pop, _from, %{stack: [head | tail], last_insert_time: time} = _state) do
+    {:reply, head, %{stack: tail, last_insert_time: time}}
   end
 
   @impl GenServer
@@ -25,12 +27,12 @@ defmodule HotCodeReloadingWeb.Stack.Stack do
   end
 
   @impl GenServer
-  def handle_cast({:push, item}, state) do
-    {:noreply, [item | state]}
+  def handle_cast({:push, item}, %{stack: stack} = _state) do
+    {:noreply, %{stack: [item | stack], last_insert_time: DateTime.utc_now()}}
   end
 
   def start_link(state \\ []) do
-    GenServer.start_link(__MODULE__, state, name: __MODULE__)
+    GenServer.start_link(__MODULE__, %{stack: state, last_insert_time: nil}, name: __MODULE__)
   end
 
   def pop() do
@@ -51,8 +53,8 @@ defmodule HotCodeReloadingWeb.Stack.Stack do
     Logger.info("Starting code change #{__MODULE__} from #{vsn}")
 
     case state do
-      [head | _tail] -> {:ok, [head]}
-      _ -> {:ok, state}
+      [head | _tail] -> {:ok, %{stack: [head], last_insert_time: nil}}
+      _ -> {:ok, %{stack: state, last_insert_time: nil}}
     end
   end
 end
