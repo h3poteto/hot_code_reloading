@@ -1,6 +1,7 @@
 defmodule HotCodeReloadingWeb.Queue.Queue do
-  @vsn "1"
+  @vsn "2"
   use GenServer
+  require Logger
 
   def init(state) do
     {:ok, state}
@@ -36,5 +37,15 @@ defmodule HotCodeReloadingWeb.Queue.Queue do
 
   def queue() do
     GenServer.call(__MODULE__, :queue)
+  end
+
+  ## for hot code reloading
+  def code_change("1" = vsn, state, _extra) do
+    Logger.info("Starting code change #{__MODULE__} from #{vsn}")
+
+    case state do
+      [head | _tail] -> {:ok, [head]}
+      _ -> {:ok, state}
+    end
   end
 end
