@@ -33,7 +33,7 @@ defmodule HotCodeReloadingWeb.Socket.CounterHandler do
 
   def websocket_info(:counter, %{counter: pid} = state) do
     GenServer.call(pid, :decrement)
-    current = GenServer.call(pid, :current)
+    {current, _unused} = GenServer.call(pid, {:current, "debug"})
     Process.send_after(self(), :counter, 5 * 1000)
     {:reply, {:text, "#{current}"}, state}
   end
