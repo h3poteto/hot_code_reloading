@@ -32,7 +32,8 @@ defmodule HotCodeReloadingWeb.Socket.ChatHandler do
 
     {:ok, _} =
       broadcast(
-        "#{message} from #{username} at #{now.year}/#{now.month}/#{now.day} #{now.hour}:#{now.minute}:#{now.second}"
+        "#{message} from #{username} at #{now.year}/#{now.month}/#{now.day} #{now.hour}:#{now.minute}:#{now.second}",
+        now
       )
 
     {:ok, state}
@@ -59,7 +60,8 @@ defmodule HotCodeReloadingWeb.Socket.ChatHandler do
     {:noreply, state}
   end
 
-  def broadcast(message) do
+  def broadcast(message, timestamp) do
+    Logger.debug("Message is broadcasted at #{inspect(timestamp)}")
     Phoenix.PubSub.broadcast(HotCodeReloading.PubSub, @topic, {:broadcast, message})
     {:ok, message}
   end
