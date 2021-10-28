@@ -15,8 +15,9 @@ defmodule HotCodeReloadingWeb.Queue.Queue do
     {:reply, head, tail}
   end
 
-  def handle_call(:queue, _from, state) do
-    {:reply, state, state}
+  def handle_call({:queue, unused_value}, _from, state) do
+    Logger.debug("Queue is called #{unused_value}")
+    {:reply, {state, unused_value}, state}
   end
 
   def handle_cast({:enqueue, item}, state) do
@@ -35,8 +36,8 @@ defmodule HotCodeReloadingWeb.Queue.Queue do
     GenServer.call(__MODULE__, :dequeue)
   end
 
-  def queue() do
-    GenServer.call(__MODULE__, :queue)
+  def queue(unused_value) do
+    GenServer.call(__MODULE__, {:queue, unused_value})
   end
 
   ## for hot code reloading
@@ -47,5 +48,13 @@ defmodule HotCodeReloadingWeb.Queue.Queue do
       [head | _tail] -> {:ok, [head]}
       _ -> {:ok, state}
     end
+  end
+
+  def code_change(vsn, state, _extra) do
+    Logger.info(
+      "Starting code change #{__MODULE__} from #{vsn}, but there is no define code_change method"
+    )
+
+    {:ok, state}
   end
 end

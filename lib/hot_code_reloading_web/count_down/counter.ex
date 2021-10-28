@@ -18,8 +18,9 @@ defmodule HotCodeReloadingWeb.CountDown.Counter do
   end
 
   @impl GenServer
-  def handle_call(:current, _from, %{count: number} = state) do
-    {:reply, number, state}
+  def handle_call({:current, unused_value}, _from, %{count: number} = state) do
+    Logger.debug("CountDown is called #{unused_value}")
+    {:reply, {number, unused_value}, state}
   end
 
   @impl GenServer

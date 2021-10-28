@@ -14,7 +14,7 @@ defmodule HotCodeReloadingWeb.Queue.Timer do
     {:ok, datetime} = DateTime.now("Etc/UTC")
     Queue.Queue.enqueue(datetime)
 
-    q = Queue.Queue.queue()
+    {q, _unused} = Queue.Queue.queue("debug")
     Logger.debug("Queue enqueued #{inspect(q)}")
 
     schedule_work()
