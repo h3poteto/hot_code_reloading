@@ -4,7 +4,7 @@ defmodule HotCodeReloading.MixProject do
   def project do
     [
       app: :hot_code_reloading,
-      version: "1.0.2",
+      version: "1.0.3",
       elixir: "~> 1.12",
       elixirc_paths: elixirc_paths(Mix.env()),
       compilers: Mix.compilers(),
