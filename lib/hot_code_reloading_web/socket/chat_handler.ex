@@ -35,11 +35,28 @@ defmodule HotCodeReloadingWeb.Socket.ChatHandler do
         "#{message} from #{username} at #{now.year}/#{now.month}/#{now.day} #{now.hour}:#{now.minute}:#{now.second}"
       )
 
+    send(self(), :external_service)
+
     {:ok, state}
   end
 
   def websocket_info({:broadcast, message}, state) do
     {:reply, {:text, message}, state}
+  end
+
+  def websocket_info(:external_service, state) do
+    case HTTPoison.get("https://whalebird.social") do
+      {:ok, %HTTPoison.Response{status_code: 200}} ->
+        Logger.info("Success to get external service")
+
+      {:ok, %HTTPoison.Response{status_code: 404}} ->
+        Logger.error("Not found")
+
+      {:error, %HTTPoison.Error{reason: reason}} ->
+        Logger.error(inspect(reason))
+    end
+
+    {:ok, state}
   end
 
   def websocket_info(info, state) do
