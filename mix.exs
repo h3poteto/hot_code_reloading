@@ -4,7 +4,7 @@ defmodule HotCodeReloading.MixProject do
   def project do
     [
       app: :hot_code_reloading,
-      version: "2.2.0",
+      version: "2.2.1",
       elixir: "~> 1.12",
       elixirc_paths: elixirc_paths(Mix.env()),
       compilers: Mix.compilers(),
@@ -51,7 +51,8 @@ defmodule HotCodeReloading.MixProject do
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.5"},
       {:httpoison, "~> 1.8.0"},
-      {:distillery, github: "bitwalker/distillery", branch: "master", override: true}
+      {:distillery, github: "bitwalker/distillery", branch: "master", override: true},
+      {:edeliver, "~> 1.8.0"}
     ]
   end
 
