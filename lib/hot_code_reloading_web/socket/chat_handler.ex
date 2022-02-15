@@ -3,6 +3,7 @@ defmodule HotCodeReloadingWeb.Socket.ChatHandler do
 
   @behaviour :cowboy_websocket
   alias HotCodeReloadingWeb.Socket.ChatHandler
+  alias HotCodeReloadingWeb.Socket.UserTracker
 
   require Logger
   defstruct [:username]
@@ -15,6 +16,7 @@ defmodule HotCodeReloadingWeb.Socket.ChatHandler do
 
   def websocket_init(%{username: username} = state) do
     Logger.info("start chat connection from #{username}")
+    UserTracker.track_user(self(), "shared", username, username)
     :ok = Phoenix.PubSub.subscribe(HotCodeReloading.PubSub, @topic)
     {:ok, state}
   end

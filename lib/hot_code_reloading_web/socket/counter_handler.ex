@@ -3,6 +3,7 @@ defmodule HotCodeReloadingWeb.Socket.CounterHandler do
 
   require Logger
   alias HotCodeReloadingWeb.CountDown.Counter
+  alias HotCodeReloadingWeb.Socket.UserTracker
 
   defstruct [:counter]
 
@@ -35,6 +36,7 @@ defmodule HotCodeReloadingWeb.Socket.CounterHandler do
     GenServer.call(pid, :decrement)
     {current, _unused} = GenServer.call(pid, {:current, "debug"})
     Process.send_after(self(), :counter, 5 * 1000)
+    Logger.info(UserTracker.user_list("shared"))
     {:reply, {:text, "#{current}"}, state}
   end
 

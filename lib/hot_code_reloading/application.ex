@@ -16,6 +16,7 @@ defmodule HotCodeReloading.Application do
       HotCodeReloadingWeb.Telemetry,
       # Start the PubSub system
       {Phoenix.PubSub, name: HotCodeReloading.PubSub},
+      {HotCodeReloadingWeb.Socket.UserTracker, [name: HotCodeReloadingWeb.Socket.UserTracker]},
       # Start the Endpoint (http/https)
       HotCodeReloadingWeb.Endpoint
       # Start a worker by calling: HotCodeReloading.Worker.start_link(arg)
